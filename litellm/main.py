@@ -147,6 +147,7 @@ from .llms.predibase.chat.handler import PredibaseChatCompletion
 from .llms.replicate.chat.handler import completion as replicate_chat_completion
 from .llms.sagemaker.chat.handler import SagemakerChatHandler
 from .llms.sagemaker.completion.handler import SagemakerLLM
+from .llms.snowflake.handler import SnowflakeCortexInferenceService
 from .llms.vertex_ai import vertex_ai_non_gemini
 from .llms.vertex_ai.gemini.vertex_and_google_ai_studio_gemini import VertexLLM
 from .llms.vertex_ai.gemini_embeddings.batch_embed_content_handler import (
@@ -235,6 +236,7 @@ databricks_embedding = DatabricksEmbeddingHandler()
 base_llm_http_handler = BaseLLMHTTPHandler()
 base_llm_aiohttp_handler = BaseLLMAIOHTTPHandler()
 sagemaker_chat_completion = SagemakerChatHandler()
+snowflake_cortex_completion = SnowflakeCortexInferenceService()
 ####### COMPLETION ENDPOINTS ################
 
 
@@ -2942,7 +2944,6 @@ def completion(  # type: ignore # noqa: PLR0915
             response = model_response
         elif custom_llm_provider == "petals" or model in litellm.petals_models:
             api_base = api_base or litellm.api_base
-
             custom_llm_provider = "petals"
             stream = optional_params.pop("stream", False)
             model_response = petals_handler.completion(
@@ -2969,6 +2970,33 @@ def completion(  # type: ignore # noqa: PLR0915
                 )
                 return response
             response = model_response
+        elif custom_llm_provider == "snowflake":
+            api_base = api_base or litellm.api_base
+            custom_llm_provider = "snowflake"
+            snowflake_account = os.environ.get("SNOWFLAKE_ACCOUNT")
+            snowflake_service_user = os.environ.get("SNOWFLAKE_SERVICE_USER")
+            snowflake_authmethod =  os.environ.get("SNOWFLAKE_AUTHMETHOD", 'oauth')
+            snowflake_token_path = os.environ.get("SNOWFLAKE_TOKEN_PATH",  "/snowflake/session/token")
+            privatekey_password = os.environ.get("SNOWFLAKE_KEY_PASSWORD")
+            api_key = (
+                api_key
+                or litellm.api_key
+            )
+            snowflake_cortex_completion.completion(model=model,
+                base_url= api_base,
+                logging_obj=logging,
+                snowflake_account=snowflake_account,
+                snowflake_service_user=snowflake_service_user,
+                snowflake_authmethod =snowflake_authmethod,
+                snowflake_token_path=snowflake_token_path,
+                privatekey_password=privatekey_password,
+                timeout=timeout,
+                temperature=temperature,
+                top_p=top_p,
+                api_key=api_key,
+                messages=messages,
+            )
+
         elif custom_llm_provider == "custom":
             url = litellm.api_base or api_base or ""
             if url is None or url == "":

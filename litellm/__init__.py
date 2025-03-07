@@ -413,7 +413,6 @@ galadriel_models: List = []
 sambanova_models: List = []
 assemblyai_models: List = []
 
-
 def is_bedrock_pricing_only_model(key: str) -> bool:
     """
     Excludes keys with the pattern 'bedrock/<region>/<model>'. These are in the model_prices_and_context_window.json file for pricing purposes only.
@@ -563,6 +562,7 @@ def add_known_models():
             sambanova_models.append(key)
         elif value.get("litellm_provider") == "assemblyai":
             assemblyai_models.append(key)
+
 
 
 add_known_models()

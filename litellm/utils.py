@@ -4935,6 +4935,14 @@ def validate_environment(  # noqa: PLR0915
             else:
                 missing_keys.append("CLOUDFLARE_API_KEY")
                 missing_keys.append("CLOUDFLARE_API_BASE")
+        elif custom_llm_provider == "snowflake":
+            if "SNOWFLAKE_ACCOUNT" not in os.environ:
+                 missing_keys.append("SNOWFLAKE_ACCOUNT")
+            elif "SNOWFLAKE_SERVICE_USER" not in os.environ:
+                 missing_keys.append("SNOWFLAKE_SERVICE_USER")
+            else:
+                keys_in_environment = True
+                
     else:
         ## openai - chatcompletion + text completion
         if (
@@ -5017,7 +5025,8 @@ def validate_environment(  # noqa: PLR0915
                 keys_in_environment = True
             else:
                 missing_keys.append("NLP_CLOUD_API_KEY")
-
+ 
+    
     if api_key is not None:
         new_missing_keys = []
         for key in missing_keys:

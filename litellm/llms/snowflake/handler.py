@@ -10,7 +10,7 @@ import requests
 from typing import Any, AsyncIterator, Dict, Iterator, List, Optional, Union
 
 import litellm
-from litellm import LiteLLMLoggingObj
+from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj
 from litellm.llms.base import BaseLLM
 from litellm.llms.base_llm.chat.transformation import BaseLLMException
 from litellm.types.utils import GenericStreamingChunk, ModelResponse
@@ -115,7 +115,7 @@ class SnowflakeCortexInferenceService(BaseLLM):
                 "Accept": "application/json, text/event-stream",
             }
         return headers
-
+    
     def _process_response(self, response: requests.Response):
         """Process streaming response"""
         # Initialize variables to accumulate content and token counts
@@ -133,7 +133,7 @@ class SnowflakeCortexInferenceService(BaseLLM):
                     ].strip()  # Extract event data (JSON)
                     try:
                         parsed_data = json.loads(event_data)  # Parse as JSON
-
+                        print('parsed_data:', parsed_data)
                         # Extract content from 'choices' and accumulate it
                         delta = parsed_data.get("choices", [{}])[0].get("delta", {})
                         content = delta.get("content", "")
@@ -247,7 +247,7 @@ class SnowflakeCortexInferenceService(BaseLLM):
                     response_content_type
                     and "text/event-stream" in response_content_type
                 ):
-                    final_response = self._process_response(response)
+                    total_prompt_tokens, total_completion_tokens, final_response = self._process_response(response)
                 else:
                     # Handle non-event-stream responses
                     final_response = response.json()

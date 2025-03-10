@@ -4984,7 +4984,7 @@ def validate_environment(  # noqa: PLR0915
             else:
                 missing_keys.append("CLOUDFLARE_API_KEY")
                 missing_keys.append("CLOUDFLARE_API_BASE")
-        elif custom_llm_provider == "snowflake":
+        elif custom_llm_provider == "snowflake_cortex":
             if "SNOWFLAKE_ACCOUNT" not in os.environ:
                  missing_keys.append("SNOWFLAKE_ACCOUNT")
             elif "SNOWFLAKE_SERVICE_USER" not in os.environ:

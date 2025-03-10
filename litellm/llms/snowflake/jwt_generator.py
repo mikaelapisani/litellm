@@ -25,7 +25,7 @@ class JWTGenerator(object):
     """
     JWTGenerator class to generate JSON Web Tokens using RSA private keys.
     The class allows generating tokens with a specified lifetime and renewal delay.
-    
+
     Attributes:
         account (str): The account name (e.g., organization or application name).
         user (str): The user identifier (e.g., service account or user ID).
@@ -120,7 +120,7 @@ class JWTGenerator(object):
             }
 
             # Encode the payload using the private key and the RS256 algorithm
-            token = jwt.encode(payload, key=self.private_key_string, algorithm=self.algorithm)
+            token = jwt.encode(payload, key=self.private_key, algorithm=self.algorithm)
             if isinstance(token, bytes):
                 token = token.decode(
                     "utf-8"

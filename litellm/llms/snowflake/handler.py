@@ -16,7 +16,6 @@ from litellm.llms.base_llm.chat.transformation import BaseLLMException
 from litellm.types.utils import GenericStreamingChunk, ModelResponse
 from litellm.llms.snowflake.jwt_generator import JWTGenerator
 
-
 class SnowflakeCortexInferenceService(BaseLLM):
     """
 
@@ -188,8 +187,7 @@ class SnowflakeCortexInferenceService(BaseLLM):
                     message="JWT auth method needs snowflake_account "
                     "snowflake_service_user and api_key to be set.",
                 )
-
-        api_key = api_key.replace("\\n", "\n").strip()  # type: ignore
+        
         # initialize default response values
         modelResponse = None
         final_response = ""

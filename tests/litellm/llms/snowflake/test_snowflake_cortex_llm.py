@@ -1,13 +1,9 @@
-from datetime import datetime
-from typing import Dict, List
-import pytest
-import requests
-import json
-from unittest.mock import AsyncMock, patch, MagicMock
-from litellm.types.utils import ModelResponse
 from unittest.mock import patch, MagicMock
+import json
+import requests
+import pytest
 
-from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj
+from litellm.types.utils import ModelResponse
 from litellm.llms.snowflake.handler import SnowflakeCortexInferenceService
 from litellm.llms.base_llm.chat.transformation import BaseLLMException
 
@@ -22,7 +18,6 @@ def mock_snowflake_llm():
 def mock_oauth_token():
     """Mock OAuth token file content."""
     return "mock_oauth_token"
-
 
 
 def test_get_auth_headers_oauth(
@@ -70,9 +65,7 @@ def test_oauth_token_missing(mock_snowflake_llm):
     "litellm.llms.snowflake.jwt_generator.JWTGenerator.get_token",
     return_value="mock_jwt_token",
 )
-def test_get_auth_headers_jwt(
-    mock_get_token, mock_jwt_init, mock_snowflake_llm
-):
+def test_get_auth_headers_jwt(mock_snowflake_llm):
     """Test that JWT headers are correctly generated without triggering real crypto operations."""
 
     headers = mock_snowflake_llm._get_auth_headers(

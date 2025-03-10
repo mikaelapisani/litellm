@@ -2978,19 +2978,24 @@ def completion(  # type: ignore # noqa: PLR0915
                 )
                 return response
             response = model_response
-        elif custom_llm_provider == "snowflake":
-            api_base = api_base or litellm.api_base
-            custom_llm_provider = "snowflake"
+        elif custom_llm_provider == "snowflake_cortex":
+            api_base = (
+                os.environ.get("SNOWFLAKE_URL")
+                or api_base
+                or litellm.api_base
+            )
+            custom_llm_provider = "snowflake_cortex"
             snowflake_account = os.environ.get("SNOWFLAKE_ACCOUNT")
             snowflake_service_user = os.environ.get("SNOWFLAKE_SERVICE_USER")
             snowflake_authmethod =  os.environ.get("SNOWFLAKE_AUTHMETHOD", 'oauth')
             snowflake_token_path = os.environ.get("SNOWFLAKE_TOKEN_PATH",  "/snowflake/session/token")
-            privatekey_password = os.environ.get("SNOWFLAKE_KEY_PASSWORD")
+            privatekey_password = os.environ.get("SNOWFLAKE_PASSWORD_KEY")
             api_key = (
-                api_key
+                os.environ.get("SNOWFLAKE_API_KEY")
+                or api_key
                 or litellm.api_key
             )
-            snowflake_cortex_completion.completion(model=model,
+            response = snowflake_cortex_completion.completion(model=model,
                 base_url= api_base,
                 logging_obj=logging,
                 snowflake_account=snowflake_account,

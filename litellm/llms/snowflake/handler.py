@@ -132,7 +132,6 @@ class SnowflakeCortexInferenceService(BaseLLM):
                     ].strip()  # Extract event data (JSON)
                     try:
                         parsed_data = json.loads(event_data)  # Parse as JSON
-                        print('parsed_data:', parsed_data)
                         # Extract content from 'choices' and accumulate it
                         delta = parsed_data.get("choices", [{}])[0].get("delta", {})
                         content = delta.get("content", "")

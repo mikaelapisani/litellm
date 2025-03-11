@@ -20,7 +20,7 @@ def rsa_private_key_pem():
         format=serialization.PrivateFormat.PKCS8,
         encryption_algorithm=serialization.NoEncryption(),
     )
-    return pem.decode('utf-8')
+    return pem.decode("utf-8")
 
 
 def test_prepare_account_name_for_jwt_non_global():
@@ -40,7 +40,7 @@ def test_jwt_generator_initialization(rsa_private_key_pem):
         account="myaccount.domain.com",
         user="testuser",
         private_key_string=rsa_private_key_pem,
-        passphrase=""
+        passphrase="",
     )
 
     assert jwt_gen.account == "MYACCOUNT"
@@ -59,7 +59,7 @@ def test_get_token_creates_token(mock_datetime, rsa_private_key_pem):
         account="myaccount.domain.com",
         user="testuser",
         private_key_string=rsa_private_key_pem,
-        passphrase=""
+        passphrase="",
     )
 
     token = jwt_gen.get_token()
@@ -67,7 +67,7 @@ def test_get_token_creates_token(mock_datetime, rsa_private_key_pem):
     assert token is not None
 
     # A JWT has 3 parts separated by dots.
-    assert len(token.split('.')) == 3
+    assert len(token.split(".")) == 3
 
 
 @patch("litellm.llms.snowflake.jwt_generator.datetime")
@@ -80,7 +80,7 @@ def test_get_token_reuses_existing_token(mock_datetime, rsa_private_key_pem):
         account="myaccount.domain.com",
         user="testuser",
         private_key_string=rsa_private_key_pem,
-        passphrase=""
+        passphrase="",
     )
 
     first_token = jwt_gen.get_token()
@@ -103,7 +103,7 @@ def test_get_token_renews_after_renewal_delay(mock_datetime, rsa_private_key_pem
         account="myaccount.domain.com",
         user="testuser",
         private_key_string=rsa_private_key_pem,
-        passphrase=""
+        passphrase="",
     )
 
     first_token = jwt_gen.get_token()
@@ -121,7 +121,7 @@ def test_calculate_public_key_fingerprint(rsa_private_key_pem):
         account="myaccount.domain.com",
         user="testuser",
         private_key_string=rsa_private_key_pem,
-        passphrase=""
+        passphrase="",
     )
 
     fingerprint = jwt_gen.calculate_public_key_fingerprint(jwt_gen.private_key)

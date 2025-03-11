@@ -1,6 +1,3 @@
-# Author: Sean Iannuzzi
-# Updated: January 14, 2024
-
 import base64
 import hashlib
 from datetime import datetime, timedelta, timezone
@@ -70,7 +67,8 @@ class JWTGenerator(object):
             self.private_key_string.encode(), password_to_use, default_backend()
         )  # Load and decrypt the private key
 
-    def prepare_account_name_for_jwt(self, raw_account):
+    @staticmethod
+    def prepare_account_name_for_jwt(raw_account):
         """
         Prepares the account name by stripping off additional parts to standardize it for JWT.
 
@@ -78,7 +76,7 @@ class JWTGenerator(object):
         :return: The cleaned account name.
         """
         account = raw_account
-        if ".global" not in account:
+        if "-global" not in account:
             idx = account.find(".")
             if idx > 0:
                 account = account[

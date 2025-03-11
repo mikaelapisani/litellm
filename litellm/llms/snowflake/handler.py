@@ -16,6 +16,7 @@ from litellm.llms.base_llm.chat.transformation import BaseLLMException
 from litellm.types.utils import GenericStreamingChunk, ModelResponse
 from litellm.llms.snowflake.jwt_generator import JWTGenerator
 
+
 class SnowflakeCortexInferenceService(BaseLLM):
     """
 
@@ -114,7 +115,7 @@ class SnowflakeCortexInferenceService(BaseLLM):
                 "Accept": "application/json, text/event-stream",
             }
         return headers
-    
+
     def _process_response(self, response: requests.Response):
         """Process streaming response"""
         # Initialize variables to accumulate content and token counts
@@ -186,7 +187,7 @@ class SnowflakeCortexInferenceService(BaseLLM):
                     message="JWT auth method needs snowflake_account "
                     "snowflake_service_user and api_key to be set.",
                 )
-        
+
         # initialize default response values
         modelResponse = None
         final_response = ""
@@ -244,7 +245,9 @@ class SnowflakeCortexInferenceService(BaseLLM):
                     response_content_type
                     and "text/event-stream" in response_content_type
                 ):
-                    total_prompt_tokens, total_completion_tokens, final_response = self._process_response(response)
+                    total_prompt_tokens, total_completion_tokens, final_response = (
+                        self._process_response(response)
+                    )
                 else:
                     # Handle non-event-stream responses
                     final_response = response.json()

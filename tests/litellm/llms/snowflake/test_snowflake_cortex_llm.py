@@ -65,7 +65,7 @@ def test_oauth_token_missing(mock_snowflake_llm):
     "litellm.llms.snowflake.jwt_generator.JWTGenerator.get_token",
     return_value="mock_jwt_token",
 )
-def test_get_auth_headers_jwt(_, _, mock_snowflake_llm):
+def test_get_auth_headers_jwt(mock_get_token, mock_init, mock_snowflake_llm):
     """Test that JWT headers are correctly generated without triggering real crypto operations."""
 
     headers = mock_snowflake_llm._get_auth_headers(

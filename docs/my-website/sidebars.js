@@ -273,7 +273,7 @@ const sidebars = {
       items: [
         {
           type: "category",
-          label: "Chat",
+          label: "/chat/completions",
           link: {
             type: "generated-index",
             title: "Chat Completions",
@@ -286,11 +286,13 @@ const sidebars = {
             "completion/usage",
           ],
         },
+        "response_api",
         "text_completion",
         "embedding/supported_embedding",
+        "anthropic_unified",
         {
           type: "category",
-          label: "Image",
+          label: "/images",
           items: [
             "image_generation",
             "image_variations",
@@ -298,7 +300,7 @@ const sidebars = {
         },
         {
           type: "category",
-          label: "Audio",
+          label: "/audio",
           "items": [
             "audio_transcription",
             "text_to_speech",
@@ -375,13 +377,6 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "Adding Providers",
-      items: [
-        "adding_provider/directory_structure",
-        "adding_provider/new_rerank_provider"],
-    },
-    {
-      type: "category",
       label: "Logging & Observability",
       items: [
         "observability/lunary_integration",
@@ -439,12 +434,26 @@ const sidebars = {
         },
       ]
     },
-
+    {
+      type: "category",
+      label: "Contributing",
+      items: [
+        "extras/contributing_code",
+        {
+          type: "category",
+          label: "Adding Providers",
+          items: [
+            "adding_provider/directory_structure",
+            "adding_provider/new_rerank_provider"],
+        },
+        "extras/contributing",
+        "contributing",
+      ]
+    },
     {
       type: "category",
       label: "Extras",
       items: [
-        "extras/contributing",
         "data_security",
         "data_retention",
         "migration_policy",
@@ -480,7 +489,6 @@ const sidebars = {
             "projects/pgai",
           ],
         },
-        "contributing",
         "proxy/pii_masking",
         "extras/code_quality",
         "rules",
